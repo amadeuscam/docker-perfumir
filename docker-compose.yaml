@@ -1,0 +1,62 @@
+version: '2'
+
+services:
+  backend:
+    image: 'perfumir-api:latest'
+    container_name: perfumir-backend
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/perfumirz_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JWT_SECRETKEY=9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9ddas90d9045454561
+      - JWT_TIME_TOKEN=9840000
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - LOGGING_LEVEL_COM_AMADEUSCAM.PERFUMIR_API=DEBUG
+      - JWT_TIME_REFRESH_TOKEN=604800000
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: amadeuscam/vue-perfumir:latest
+    container_name: perfumir-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:
+    restart: always
+    image: postgres:12
+    environment:
+      POSTGRES_DB: perfumirz_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - perfumir_db_prod:/var/lib/postgresql/data/
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - default
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d perfumirz_db -p 5432" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin4_perfumir
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5051:80"
+
+volumes:
+  perfumir_db_prod: {}

@@ -77,4 +77,4 @@ Running the Script
   - [Frontend Vue 3](https://github.com/amadeuscam/perfumir-front)
   - [Spring Boot ](https://github.com/amadeuscam/perfumir_api_java)
 
-####  5. If you hace questions ,ideas o you want to contribute financial my email is amadeuscam@yahoo.es
+####  5. If you have questions ,ideas o you want to contribute financial my email is amadeuscam@yahoo.es

@@ -2,7 +2,7 @@ version: '2'
 
 services:
   backend:
-    image: 'perfumir-api:latest'
+    image: 'amadeuscam/perfumir-api:latest'
     container_name: perfumir-backend
     depends_on:
       - db
